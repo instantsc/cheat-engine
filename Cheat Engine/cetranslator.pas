@@ -33,6 +33,7 @@ Modified for Cheat Engine use because filenames differ between 32 and 64-bit (al
 
 }
 
+
 {$mode objfpc}{$H+}
 
 interface

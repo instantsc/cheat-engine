@@ -287,6 +287,15 @@ begin
 
         printoutput.add(rsError+error);
 
+        lua_getglobal(L, 'debug');
+        lua_pushstring(L,'traceback');
+        lua_gettable(L,-2);
+        lua.lua_pcall(L,0,1,0);
+
+        printoutput.add(Lua_ToString(L,-1));
+
+
+
         if (frmLuaEngine<>nil) and usesluaengineform and (frmLuaEngine.cbShowOnPrint.checked) then
           frmLuaEngine.show;
 
@@ -15046,6 +15055,13 @@ begin
   lua_pushboolean(L, ShouldAppsUseDarkMode);
 end;
 
+
+function lua_getCEName(L: Plua_State): integer; cdecl;
+begin
+  lua_pushstring(L, strCheatEngine);
+  exit(1);
+end;
+
 function lua_getNextReadablePageCR3(L: Plua_State): integer; cdecl;
 var
   cr3: qword;
@@ -15876,6 +15892,7 @@ begin
     lua_register(L, 'signExtend', lua_signExtend);
 
     lua_register(L, 'darkMode', lua_darkMode);
+    lua_register(L, 'getCEName', lua_getCEName);
 
 
 
