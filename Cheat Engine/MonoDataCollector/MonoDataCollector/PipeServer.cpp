@@ -307,8 +307,11 @@ void CPipeServer::InitMono()
 				{
 					if (GetProcAddress(me.hModule, "mono_thread_attach"))
 					{
-						hMono = me.hModule;
-						break;
+						if (_wcsicmp(me.szModule, L"GameAssembly.dll") && (GetProcAddress(me.hModule, "mono_assembly_foreach")))
+						{
+							hMono = me.hModule;
+							break;
+						}
 					}
 
 					if (GetProcAddress(me.hModule, "il2cpp_thread_attach"))
@@ -2350,9 +2353,12 @@ void CPipeServer::Start(void)
 
 				if (limitedConnection) //beware: If profiling gets added someday, this will likely cause issues
 				{
-					mono_thread_detach(mono_selfthread);
-					attached = false;
-					mono_selfthread = NULL;
+					if (mono_thread_detach)
+					{
+						mono_thread_detach(mono_selfthread);
+						attached = false;
+						mono_selfthread = NULL;
+					}
 				}
 
 			}

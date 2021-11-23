@@ -1321,6 +1321,7 @@ resourcestring
   rsAreYouSure = 'Are you sure?';
   rsClearRecentFiles = 'Empty Recent Files List';
   rsFirst = 'First';
+  rsEnableSpeedHack = 'Enable '+strSpeedHack;
 
 var
   ncol: TColor;
@@ -3587,7 +3588,7 @@ begin
   p.Executable:=(path);
   p.Execute;
   {$else}
-  shellexecute(0, 'open', pchar(cheatenginedir+'Tutorial-x86_64.exe'), nil, nil, sw_show);
+  shellexecute(0, 'open', pchar(cheatenginedir+{$ifdef altname}'rtm-tutorial-x86_64.exe'}{$else}'Tutorial-x86_64.exe'{$endif}), nil, nil, sw_show);
   {$endif}
 end;
 
@@ -5803,7 +5804,7 @@ begin
   if FileExists(s) then
     createlog:=true
   else
-    createlog:=cereg.readBool('Debug');
+    createlog:=false;
 
   miEnableLCLDebug.Checked:=createlog;
 
@@ -6147,6 +6148,8 @@ begin
   RecentFiles:=tstringlist.Create;
   cereg.readStrings('Recent Files', RecentFiles);
 
+
+  cbSpeedhack.caption:=rsEnableSpeedHack;
 
 
   {$ifdef darwin}
@@ -9556,7 +9559,7 @@ end;
 
 procedure TMainForm.miTutorialClick(Sender: TObject);
 begin
-  shellexecute(0, 'open', pchar(cheatenginedir+'Tutorial-i386.exe'), nil, nil, sw_show);
+  shellexecute(0, 'open', pchar(cheatenginedir+{$ifdef altname}'rtm-tutorial-i386.exe'}{$else}'Tutorial-i386.exe'{$endif}), nil, nil, sw_show);
 end;
 
 procedure TMainForm.miFlFindWhatAccessesClick(Sender: TObject);
@@ -10346,9 +10349,6 @@ begin
   x[6]:=foundlist3.columns[0].Width;
 
   saveformposition(self, x);
-
-  cereg.writeBool('Debug', miEnableLCLDebug.checked);
-
 
   if foundlist <> nil then
     foundlist.Deinitialize;
