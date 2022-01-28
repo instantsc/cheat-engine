@@ -27,8 +27,8 @@ jobs:
           lazarus-version: ${{ env.LAZARUS_VERSION }}
           include-packages: ${{ steps.get-dependencies.outputs.dependencies }}
       - name: Install 32bit compat
-        shell: bash
-        run: wget https://downloads.sourceforge.net/project/lazarus/Lazarus%20Windows%2064%20bits/Lazarus%20${LAZARUS_VERSION}/lazarus-${LAZARUS_VERSION}-fpc-${FPC_VERSION}-cross-i386-win32-win64.exe -O ${GITHUB_WORKSPACE}/32bit.exe && cd ${GITHUB_WORKSPACE} && ./32bit.exe /VERYSILENT /DIR=${RUNNER_TEMP}/lazarus
+        shell: powershell
+        run: wget https://downloads.sourceforge.net/project/lazarus/Lazarus%20Windows%2064%20bits/Lazarus%20$Env:LAZARUS_VERSION/lazarus-$Env:LAZARUS_VERSION-fpc-$Env:FPC_VERSION-cross-i386-win32-win64.exe -O $Env:GITHUB_WORKSPACE/32bit.exe && cd $Env:GITHUB_WORKSPACE && ./32bit.exe /VERYSILENT /DIR=$Env:RUNNER_TEMP/lazarus
         env:
           LAZARUS_VERSION: ${{ env.LAZARUS_VERSION }}
           FPC_VERSION: ${{ env.FPC_VERSION }}
